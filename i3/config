@@ -46,6 +46,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
+exec --no-startup-id dunst
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -67,8 +68,7 @@ exec --no-startup-id redshift -O 3500
 floating_modifier $mod
 
 # start a terminal
-#bindsym $mod+Return exec kitty
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+q kill
@@ -246,16 +246,18 @@ default_floating_border pixel 4
 
 
 # Set default startup tabs 
+# to know window class run: xprop | grep WM_CLASS then click at the programs window
+
 # Assign Terminal apps
-assign [class="Alacritty"] 1
-# assign [class="kitty"] 1
+assign [class="kitty"] 1
 # Assign Chrome
 assign [class="Google-chrome"] 2
+#assign [class="code-oss"] 3
 # assign [class="Evince"] 3
-assign [class="xournalpp"] 3
+assign [class="xournalpp"] 3 
 assign [class="discord"] 7
-assign [class="vlc"] 5
-assign [class="Mousepad"] 4
+assign [class="vlc"] 4
+# assign [class="Mousepad"] 5
 assign [class="Ristretto"] 8
 assign [class="TelegramDesktop"] 6
 
@@ -266,7 +268,7 @@ assign [class="TelegramDesktop"] 6
 
 #Startup apps
 
-exec --no-startup-id alacritty
+exec --no-startup-id kitty
 exec --no-startup-id google-chrome-stable
 #exec --no-startup-id evince
 #######################################3
@@ -341,4 +343,3 @@ exec_always --no-startup-id xmodmap -e "keycode 135 = Down"
 # Type arrow symbols using Ctrl + l + a / Ctrl + r + a
 bindsym Control+l+a exec --no-startup-id xdotool type "←"
 bindsym Control+r+a exec --no-startup-id xdotool type "→"
-

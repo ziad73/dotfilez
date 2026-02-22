@@ -1,5 +1,5 @@
 Window management:
-  $mod+Return        Open terminal (Alacritty)
+  $mod+Return        Open terminal (Kitty)
   $mod+q             Kill window
   $mod+f             Fullscreen toggle
   $mod+space         Focus toggle tiling/floating
@@ -58,6 +58,5 @@ Night light:
 Launchers:
   $mod+a             Rofi app menu
   $mod+p             Rofi power menu
-
 
 

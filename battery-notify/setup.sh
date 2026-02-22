@@ -1,6 +1,53 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+ENABLE_NOW=1
+RUN_NOW=0
+
+for arg in "$@"; do
+    case "$arg" in
+        --no-enable)
+            ENABLE_NOW=0
+            ;;
+        --run-now)
+            RUN_NOW=1
+            ;;
+        -h|--help)
+            cat <<'EOF'
+Usage: setup.sh [--no-enable] [--run-now]
+
+Installs battery alert scripts and systemd user units:
+  - ~/.config/battery-notify/check.sh
+  - ~/.config/systemd/user/battery-notify.service
+  - ~/.config/systemd/user/battery-notify.timer
+
+Options:
+  --no-enable   Do not enable/start the timer automatically.
+  --run-now     Run one battery check after installation.
+EOF
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $arg" >&2
+            exit 1
+            ;;
+    esac
+done
+
+CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+BATTERY_DIR="$CONFIG_HOME/battery-notify"
+SYSTEMD_USER_DIR="$CONFIG_HOME/systemd/user"
+
+CHECK_SCRIPT="$BATTERY_DIR/check.sh"
+SERVICE_FILE="$SYSTEMD_USER_DIR/battery-notify.service"
+TIMER_FILE="$SYSTEMD_USER_DIR/battery-notify.timer"
+
+mkdir -p "$BATTERY_DIR" "$SYSTEMD_USER_DIR"
+
+cat >"$CHECK_SCRIPT" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/battery-notify"
 STATE_FILE="$CONFIG_DIR/.state"
 
@@ -108,3 +155,59 @@ elif [ "$status" = "Charging" ] || [ "$status" = "Full" ]; then
 fi
 
 printf '%s\n' "$new_state" >"$STATE_FILE"
+EOF
+
+cat >"$SERVICE_FILE" <<'EOF'
+[Unit]
+Description=Battery level checker with desktop notifications
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/battery-notify/check.sh
+EOF
+
+cat >"$TIMER_FILE" <<'EOF'
+[Unit]
+Description=Run battery checker every minute
+
+[Timer]
+OnBootSec=30
+OnUnitActiveSec=60
+
+[Install]
+WantedBy=timers.target
+EOF
+
+chmod +x "$CHECK_SCRIPT"
+
+if ! command -v notify-send >/dev/null 2>&1; then
+    echo "Warning: notify-send not found. Install libnotify (Arch: sudo pacman -S --needed libnotify)." >&2
+fi
+
+if [ "$ENABLE_NOW" -eq 1 ]; then
+    if command -v systemctl >/dev/null 2>&1; then
+        if systemctl --user daemon-reload \
+            && systemctl --user enable --now battery-notify.timer; then
+            echo "Timer enabled: battery-notify.timer"
+        else
+            echo "Could not enable timer automatically in this session." >&2
+            echo "Run manually:" >&2
+            echo "  systemctl --user daemon-reload" >&2
+            echo "  systemctl --user enable --now battery-notify.timer" >&2
+        fi
+    else
+        echo "systemctl not found. Enable the timer manually if you use systemd user services." >&2
+    fi
+fi
+
+if [ "$RUN_NOW" -eq 1 ]; then
+    "$CHECK_SCRIPT"
+    echo "Ran one battery check."
+fi
+
+cat <<EOF
+Installed:
+  $CHECK_SCRIPT
+  $SERVICE_FILE
+  $TIMER_FILE
+EOF
