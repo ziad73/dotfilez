@@ -1,0 +1,302 @@
+GitHub Commands:
+===============
+History==Local Repo
+
+Clone: A copy of repo that u have permissions to CRUD on it
+Fork: A copy of repo that u don’t have permissions on it
+
+Git Bash:
+---------
+-To search in old commands CTRL+R then enter keyword
+- Copies by selection automatically
+- Accept invitation using Gmail
+- Directory == folder
+
+README.md Syntax:
+-----------------
+https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
+
+Git Basic Operations:
+--------------------
+clone: Get copy from repo and download it in local PC to edit
+
+-To Add & Commit in one line: git commit -a -m (-am) "message" , -a means all
+-To rename last commit message: git commit --amend -m "New commit message"
+
+1. Get clone from remote Repo: git clone + HTTPS link
+2. Stage/Track Files: Put definition in index file  
+    - git add File.ext OR */. (select all files in the current directory)
+	- if you are in nested sub directory use: git add -A 
+    - To unstage: git restore --staged my_notes.txt
+3. Push to local Repo: 
+    - git commit -m "message"
+    - git commit + ENTER + Message + Enter + Descroption 
+
+4. Push to remote: git push Remote-Name Branch-Name
+    - Get remote name: git remote -v
+    - Get branch name: git branch
+
+Removing Files:
+---------------
+rm <file> 			Working Dir (untracked)	
+
+if Added:
+git restore --staged <file> 	Staging Area (staged)	
+
+
+if Committed:
+git rm --cached	-r . or	<file> 	History/Local Repo
+git commit -m "Remove some sensitive Files"	
+
+
+Delete a Branch But Keep Its Changes in Your Working Directory:
+git reset --mixed origin/main 
+    To keep changes unstaged, use --mixed (default).
+    To keep changes staged, use --soft.
+    To remove changes entirely, use --hard.
+Then delete Local Branch
+
+Updating Local Repo:
+-------------------
+git pull origin <main> == [fetch + merge] updates from remote to local
+
+
+
+Upload Project to Remote Repo:
+------------------------------
+1. git init
+2. Add & commit files
+3. Create new repo on GitHub (use SSH Link)
+4. git remote add origin + SSH Link
+5. git branch -M main  (Rename master to main)
+6. git push -u origin main (-u Upstream)
+
+
+
+Pull Requests:
+--------------
+- "Commit directly": For small, non-critical changes
+- "Create new branch": For team work with code reviews
+
+Branch Management: Look on the tutorial git.html
+-----------------
+Branch: its a linear pipeline of commits that has a head pointer which points on last commit [imagine it as Linked ist]
+
+git branch                   Show local branches
+git branch -a                Show all branches Local & Remote
+git branch scroll            Create branch "scroll"
+git branch -m scroll2        Rename branch
+git checkout scroll          Switch to branch(Old)
+git switch Branch            Switch to branch
+git switch -c scroll         Create & switch to branch
+git status                   Show current branch
+git merge scroll -m "msg"    Merge(must be on main branch)
+git merge --quit   	     To quit from (main|MERGING)
+git rebase scroll -m "msg"   Merge & make main branch linear again[squash roots](must be on main branch)
+
+note:
+if there is conflict at merging?
+    1. git config pull.rebase false
+    2. git pull
+    - will be merged successfully and conflicted lines will marked(+)
+How to know conflicted files?
+    - use git status 
+
+Delete Branches:
+---------------
+# Remote:
+git push origin --delete branch-name
+
+# Local:
+git branch -d branch-name    Safe delete (checks for unmerged)
+git branch -D branch-name    Force delete
+
+divergent: different files in main & merge branch, will create a new commit for merge (3 way merge)
+conflict: files are edited in the same lines
+
+Workflow Example:
+----------------
+1. Create new branch
+2. Stage files & commit
+3. git push
+4. Set local repo as upstream: git push -u origin feature/add-login [-u ==--set-upstream]
+       - Upstream branch will ask for a pull request by default 
+5. Create PR via GitHub
+6. Switch to main: git switch main
+7. Update local main: git pull origin main          
+8. Delete local branch: git branch -d feature/add-login 
+9. Delete remote branch: git push origin --delete feature/add-login 
+
+Stash Commands: 
+---------------
+its a Git command that temporarily saves your uncommitted changes (both staged and unstaged),
+so you can switch branches, pull updates, or work on something else without committing incomplete work.
+
+git stash                    Stash changes
+git stash save "message"     Stash with description
+git stash list               List all stashes
+git stash show stash@{n}     Show changes
+git stash apply stash@{n}    Apply stash
+git stash pop stash@{n}      Apply and remove stash
+git stash drop stash@{n}     Delete stash
+git stash clear              Remove all stashes
+
+Note: any command without using stash@{n} will work with n as default position
+
+Reset & Revert Commits:
+---------------
+Reset (removes commits completely): Move head pointer to a specific commit
+git log --oneline            Show prev commits with hashes
+git log --graph --oneline --all  show branch graph
+    -To make git graph as alias name: git config --global alias.graph "log --graph --oneline --all --decorate --color"
+git reflog		     Show all commits with hashes
+git show hash                Commit details
+git diff hash1..hash2         Compare commits
+git reset --hard hash        Reset to commit
+    - "--hard" Removes current commit changes and get hash changes
+git push origin main --force Force push changes
+
+also can use HEAD instead of hash:
+
+Fast Backward: Move head pointer backward 
+    - We can use HEAD~N to get last N commit instead of using hash
+Fast Forward: move head pointer forward
+    - We can use HEAD@{N} to get last N commit instead of using hash
+
+
+Revert (safe undo with new commit):
+git revert hash              Revert single commit
+git revert old^..new         Revert range of commits
+
+.gitignore File:
+---------------
+- File containing untracked files/folders
+- Ignore folder anywhere: **/foldername/
+- Ignore file anywhere: Readme.md
+- Ignore extension files: *.md
+- To Exclude some:!main.md
+- To write a comment: # Message
+
+- To Remove files already pushed in Github
+- Remove them from Git tracking but keep them on disk using: git rm -r --cached temp/ [-r == remote]
+- git rm -r --cached Directory\ Tree.py  # Escape spaces or use quotes
+
+
+Tagging: Tagging is like marking a specific commit at a specific point in history. Typically used to mark release points (e.g. v1.0, v1.5, etc.)
+==>git.html
+
+
+Configuration:
+--------------
+git help config              Show config help
+git config -l                List all configs
+git config --global user.email "email"  Set email
+git config --global user.name "name"    Set name
+
+ssh-keygen [secure shield-key generator]: GitHub
+
+public key && SSH Key Generation  
+---------------------------------
+password "zuzz"
+Take steps from chatgpt
+
+--------------------
+
+tutorial vid: https://www.youtube.com/watch?v=Q6G-J54vgKc&t=10006s&ab_channel=%D8%A8%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8ABigData
+i have skipped git in vs code  
+last of remote work
+
+things u may need to learn:
+    -GitHub Project
+    -publish project (deploy i think)
+    -GitHub Pages
+    -web hooks
+
+
+
+How to contribute with Open Source projects:
+
+1. Fork the Repository (on GitHub)
+2. Clone Your Fork Locally
+3. Add the Original Repo as "Upstream" (to sync later)
+git remote add upstreamName https://github.com/original-owner/repo.git
+
+-Verify remotes:
+git remote -v
+# Should show:
+# origin    https://github.com/your-username/repo.git (fetch/push)
+# upstream  https://github.com/original-owner/repo.git (fetch/push)
+4. Create a New Branch and Make Changes & Commit then Push
+5. Sync with Upstream (Optional, Avoid Conflicts)
+-Fetch latest changes from the original repo:
+git fetch upstreamName
+git merge upstreamName/main  # or `git rebase upstream/main`
+Resolve conflicts if any (see conflict resolution guide).
+6. Create a Pull Request then submit it
+
+
+
+
+---------------------------
+Tagging & Releases:
+
+Semantic Versioning (SemVer) is a widely adopted versioning scheme for software that helps convey meaning about the underlying changes in each release.
+It follows the format: MAJOR.MINOR.PATCH (e.g., 2.5.1).
+
+Semantic Versioning Rules:
+-MAJOR version – Incremented for backward-incompatible changes (breaking changes).
+-Example: 1.0.0 → 2.0.0 (API changes that require user action).
+-Resets MINOR and PATCH to 0.
+-MINOR version – Incremented for backward-compatible new features.
+-Example: 1.2.3 → 1.3.0 (new functionality in a backward-compatible way).
+-Resets PATCH to 0.
+-PATCH version – Incremented for backward-compatible bug fixes.
+-Example: 1.2.3 → 1.2.4 (bug fixes, no new features).
+
+
+
+
+
+
+
+
+========================================================
+Some issues u will face one day:
+-------------------------------
+> i have always use ssh key and everything go well, why now ask for username,password to push branches to gitHub
+[Thinking...]
+
+It happens if your remote URL is set to HTTPS instead of SSH. Check with:
+
+┃ git remote -v
+
+If it shows https://..., switch it back to SSH:
+
+┃ git remote set-url origin git@github.com:USERNAME/REPO.git
+
+After that, pushing will use your SSH key again instead of asking for
+username/password.
+
+
+
+
+how to download a specific directory from remote repo use: (https://download-directory.github.io) and paste the folder link to get a ZIP. ✅
+
+
+recovery codes for ziad73: 
+b29d5-53818
+f968f-830cd
+e9c8f-54180
+fefb0-cc05e
+921ef-44dd9
+25555-20a73
+d9d3c-56607
+0e9d5-7d96e
+c0cd6-782aa
+d19de-8e5dc
+394ab-bd500
+57a29-7a268
+d5334-8d3ae
+c8d49-92dcb
+d0895-15e3e
+689a1-d7ca9
