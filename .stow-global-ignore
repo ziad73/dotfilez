@@ -16,9 +16,10 @@ _darcs
 \.gitignore
 \.gitmodules
 
-# my custom ignore
-\guide.md
-\my-scripts
+# Corrected custom ignore section
+guide\.md
+my-scripts
+
 
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
