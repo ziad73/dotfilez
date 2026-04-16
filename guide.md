@@ -1,7 +1,7 @@
-How to restore arch setup?
-    1. packages download:
-        - fn to generate pkglist from all providers and add/update it to dotfiles
-        - Package Manifest + Git Clone (Automated reinstall) from pkglist
+How to restore arch setup in seconds?
+    1. packages download: use existing bash functions
+        - Update current pckgs list: update_pckgs() 
+        - Automated reinstall: install_pckgs() 
 
     2. GNU stow symlink: https://youtu.be/06x3ZhwrrwA
         - dotfiles folder becomes the "Source of Truth"—the actual place where the real bytes are stored on your disk. 

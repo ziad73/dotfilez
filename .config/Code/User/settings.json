@@ -7,14 +7,16 @@
   "editor.renderWhitespace": "boundary",
   "window.autoDetectColorScheme": false,
   "workbench.colorTheme": "Vitesse Dark",
-  "workbench.editor.tabActionLocation": "left",
+  // This ensures the Secondary Sidebar (AI/Chat) stays on the RIGHT
+  "workbench.editor.tabActionLocation": "right",
   "workbench.fontAliasing": "antialiased",
   "workbench.iconTheme": "catppuccin-mocha",
   "workbench.list.smoothScrolling": true,
   "workbench.preferredDarkColorTheme": "Vitesse Dark",
   "workbench.preferredLightColorTheme": "Vitesse Light",
   "workbench.productIconTheme": "icons-carbon",
-  "workbench.sideBar.location": "right",
+  // This moves the Explorer, Extensions, and Search back to the LEFT
+  "workbench.sideBar.location": "left",
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tree.expandMode": "singleClick",
   "workbench.tree.indent": 10,

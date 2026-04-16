@@ -18,6 +18,7 @@ _darcs
 
 # Corrected custom ignore section
 guide\.md
+pckgs\.sh
 my-scripts
 ^.config/Code/User/antfu-settings\.md$
 

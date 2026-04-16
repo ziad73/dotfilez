@@ -377,3 +377,86 @@ export PATH=/home/ziad/.local/bin:/home/ziad/.nvm/versions/node/v24.11.1/bin:/ho
 
 
 alias v='vim'
+
+
+update_pckgs() {
+    local DOTFILES_PATH="$HOME/dotfiles/pckgs.sh"
+
+    # Create the directory if it doesn't exist
+    mkdir -p "$(dirname "$DOTFILES_PATH")"
+
+    {
+        echo "#!/bin/bash"
+        echo "# Generated on: $(date)"
+        echo ""
+
+        # 1. Native Pacman Packages (Explicitly installed)
+        echo "export PACMAN_PKGS=("
+        pacman -Qqen | sed 's/^/  "/' | sed 's/$/"/'
+        echo ")"
+        echo ""
+
+        # 2. AUR Packages (via pacman -Qm or yay)
+        echo "export AUR_PKGS=("
+        pacman -Qqem | sed 's/^/  "/' | sed 's/$/"/'
+        echo ")"
+
+        # 3. Flatpaks (Optional check)
+        if command -v flatpak &> /dev/null; then
+            echo ""
+            echo "export FLATPAK_PKGS=("
+            flatpak list --app --columns=application | sed 's/^/  "/' | sed 's/$/"/'
+            echo ")"
+        fi
+    } > "$DOTFILES_PATH"
+
+    chmod +x "$DOTFILES_PATH"
+    echo "Successfully updated $DOTFILES_PATH"
+}
+
+
+install_pckgs() {
+    local DOTFILES_PATH="$HOME/dotfiles/pckgs.sh"
+
+    # Check if the package list exists
+    if [ ! -f "$DOTFILES_PATH" ]; then
+        echo "Error: $DOTFILES_PATH not found. Run your update function first."
+        return 1
+    fi
+
+    # Source the variables (PACMAN_PKGS, AUR_PKGS, FLATPAK_PKGS)
+    source "$DOTFILES_PATH"
+
+    # 1. Install Native Pacman Packages
+    if [ ${#PACMAN_PKGS[@]} -gt 0 ]; then
+        echo "--> Installing native packages..."
+        sudo pacman -S --needed --noconfirm "${PACMAN_PKGS[@]}"
+    fi
+
+    # 2. Install AUR Packages
+    if [ ${#AUR_PKGS[@]} -gt 0 ]; then
+        # Check for common AUR helpers (yay or paru)
+        local AUR_HELPER=""
+        if command -v yay &> /dev/null; then
+            AUR_HELPER="yay"
+        elif command -v paru &> /dev/null; then
+            AUR_HELPER="paru"
+        fi
+
+        if [ -n "$AUR_HELPER" ]; then
+            echo "--> Installing AUR packages using $AUR_HELPER..."
+            $AUR_HELPER -S --needed --noconfirm "${AUR_PKGS[@]}"
+        else
+            echo "Warning: No AUR helper (yay/paru) found. Skipping AUR packages."
+        fi
+    fi
+
+    # 3. Install Flatpaks
+    if [ ${#FLATPAK_PKGS[@]} -gt 0 ] && command -v flatpak &> /dev/null; then
+        echo "--> Installing Flatpaks..."
+        # Flatpak install logic (assumes flathub is configured)
+        flatpak install --or-update -y flathub "${FLATPAK_PKGS[@]}"
+    fi
+
+    echo "Installation process complete."
+}
