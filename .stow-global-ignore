@@ -19,6 +19,7 @@ _darcs
 # Corrected custom ignore section
 guide\.md
 my-scripts
+^.config/Code/User/antfu-settings\.md$
 
 
 .+~          # emacs backup files
