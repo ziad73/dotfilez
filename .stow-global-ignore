@@ -21,6 +21,7 @@ guide\.md
 pckgs\.sh
 my-scripts
 ^.config/Code/User/antfu-settings\.md$
+make_scripts_executable.sh
 
 
 .+~          # emacs backup files

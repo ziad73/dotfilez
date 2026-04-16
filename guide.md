@@ -7,6 +7,9 @@ How to restore arch setup in seconds?
         - dotfiles folder becomes the "Source of Truth"—the actual place where the real bytes are stored on your disk. 
         - The original locations (like ~/.config or your home directory) just contain "pointers" that tell the system where to go to find the data.
         - move only manually configured files into dotfiles, NOT all  
+    
+    3. Don't forget to make all shell scripts executable
+        - run make_scripts_executable.sh 
 
 
 - for things that configure the base os, make bash scripts for it!!

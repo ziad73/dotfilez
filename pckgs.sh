@@ -1,5 +1,5 @@
 #!/bin/bash
-# Generated on: Thu Apr 16 11:17:09 PM EET 2026
+# Generated on: Thu Apr 16 11:57:13 PM EET 2026
 
 export PACMAN_PKGS=(
   "7zip"
@@ -120,6 +120,7 @@ export PACMAN_PKGS=(
   "xclip"
   "xdg-desktop-portal"
   "xdg-desktop-portal-gtk"
+  "xdg-desktop-portal-xapp"
   "xdg-utils"
   "xdotool"
   "xf86-video-amdgpu"
@@ -132,7 +133,6 @@ export PACMAN_PKGS=(
   "xournalpp"
   "xss-lock"
   "xterm"
-  "yazi"
   "yt-dlp"
   "zip"
   "zoxide"
