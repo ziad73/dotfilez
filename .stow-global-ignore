@@ -21,6 +21,9 @@ guide\.md
 pckgs\.sh
 my-scripts
 ^.config/Code/User/antfu-settings\.md$
+^.config/Code/User/History($|/)
+^.config/Code/User/globalStorage($|/)
+^.config/Code/User/workspaceStorage($|/)
 make_scripts_executable.sh
 
 

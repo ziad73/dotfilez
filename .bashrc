@@ -149,29 +149,39 @@ PROMPT_COMMAND='EXIT_CODE=$?;
                 printf "\033[s\033[999C\033[%dD%s\033[u" $((${#STATUS}+1)) "$STATUS"'
 ##############################################################
 
-alias chat="chatbang"
-alias v="nvim"
+alias v="vim"
 
 # atbash cipher
 atbash() {
     echo "$*" | tr 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' 'ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba'
 }
 
-export PATH=$PATH:/usr/local/go/bin
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
+export GOPATH="$HOME/go"
+
+path_prepend() {
+    case ":$PATH:" in
+        *":$1:"*) ;;
+        *) PATH="$1${PATH:+:$PATH}" ;;
+    esac
+}
+
+path_append() {
+    case ":$PATH:" in
+        *":$1:"*) ;;
+        *) PATH="${PATH:+$PATH:}$1" ;;
+    esac
+}
+
+path_prepend "$HOME/.local/bin"
+path_prepend "$HOME/.local/share/nvim/mason/bin"
+path_prepend "/usr/local/go/bin"
+path_append "$GOPATH/bin"
+path_append "/opt/nvim"
+path_append "/usr/local/bin"
+export PATH
 
 # alias name for path directory
 alias lcl="cd /mnt/localdisk/"
-
-export PATH=$PATH:~/.local/bin
-
-# bottom overrides ups
-export PATH=/usr/local/go/bin:$PATH
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-
-export PATH="$PATH:/opt/nvim"
 
 alias git-graph='git log --graph --decorate --oneline --all --abbrev-commit --color'
 function lazygit() {
@@ -271,9 +281,7 @@ open() {
     esac
 }
 
-export PATH="$PATH:/usr/local/bin"
-alias v="nvim"
-export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
+alias v="vim"
 
 # Auto start tmux
 if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
@@ -373,12 +381,6 @@ clip() {
 
     echo "Copied '$1' to clipboard as $mime"
 }
-export PATH=/home/ziad/.local/bin:/home/ziad/.nvm/versions/node/v24.11.1/bin:/home/ziad/.local/share/nvim/mason/bin:/usr/local/go/bin:/home/ziad/.local/share/nvim/mason/bin:/usr/local/go/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/usr/local/go/bin:/home/ziad/go/bin:/home/ziad/.local/bin:/home/ziad/go/bin:/opt/nvim:/usr/local/bin:/usr/local/go/bin:/home/ziad/go/bin:/home/ziad/.local/bin:/home/ziad/go/bin:/opt/nvim:/usr/local/bin
-
-
-alias v='vim'
-
-
 update_pckgs() {
     local DOTFILES_PATH="$HOME/dotfiles/pckgs.sh"
 
