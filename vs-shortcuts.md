@@ -2,8 +2,9 @@ The art of using Home, End, Page Up, Page Down, Shift, CTRL, Thats crazy shit ma
 
 ctrl . fix suggestion
 ctrl B toggle left sidebar
-	- ctrl shift E Explorer cursr move
-	
+	- ctrl shift E Explorer cursor move
+		- 'a' to create a new file
+		- Shift A to create a new directory
 ctrl alt B toggle right sidebar "AI Agent"
 ctrl ` toggle down sidebar "terminal"
 

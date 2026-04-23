@@ -8,8 +8,15 @@ case $- in
 *) return ;;
 esac
 
-# Enable Git tab completion
-# source ~/.git-completion.bash
+# Enable bash-completion
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
 
 alias ls='ls -F'
 
@@ -121,7 +128,66 @@ fi
 ########################################################
 # Function to show git branch
 parse_git_branch() {
-    git branch 2>/dev/null | sed -n '/\* /s///p'
+    # simple way
+    # git branch 2>/dev/null | sed -n '/\* /s///p'
+
+    # more robust way
+    local branch git_dir head git_marker dir
+
+    branch="$(git symbolic-ref --quiet --short HEAD 2>/dev/null)" && {
+        printf '%s' "$branch"
+        return 0
+    }
+
+    branch="$(git rev-parse --quiet --short HEAD 2>/dev/null)" && {
+        printf '%s' "$branch"
+        return 0
+    }
+
+    dir="$PWD"
+    while [ "$dir" != "/" ]; do
+        if [ -d "$dir/.git" ] || [ -f "$dir/.git" ]; then
+            git_marker="$dir/.git"
+            break
+        fi
+        dir="${dir%/*}"
+        [ -n "$dir" ] || dir="/"
+    done
+
+    [ -n "${git_marker:-}" ] || return 1
+
+    if [ -d "$git_marker" ]; then
+        git_dir="$git_marker"
+    else
+        read -r head < "$git_marker" || return 1
+        case "$head" in
+            gitdir:\ *)
+                git_dir="${head#gitdir: }"
+                case "$git_dir" in
+                    /*) ;;
+                    *) git_dir="$(cd "$(dirname "$git_marker")" && cd "$git_dir" 2>/dev/null && pwd)" ;;
+                esac
+                ;;
+            *)
+                return 1
+                ;;
+        esac
+    fi
+
+    [ -r "$git_dir/HEAD" ] || return 1
+    read -r head < "$git_dir/HEAD" || return 1
+
+    case "$head" in
+        ref:\ refs/heads/*)
+            printf '%s' "${head#ref: refs/heads/}"
+            ;;
+        ref:\ *)
+            printf '%s' "${head#ref: }"
+            ;;
+        *)
+            printf '%.12s' "$head"
+            ;;
+    esac
 }
 
 # Function to show exit code (if nonzero)
@@ -150,6 +216,21 @@ PROMPT_COMMAND='EXIT_CODE=$?;
 ##############################################################
 
 alias v="vim"
+
+# Git refuses to operate in a repository owned by a different user
+# this is a security protection
+# it prevents malicious repos from abusing Git config/hooks in directories you don’t actually own
+# So “trust rule” is just:
+# an allowlist entry in your global Git config
+# specifically the safe.directory setting
+
+# use trustrepo only when Git complains about dubious ownership
+trustrepo() {
+    local repo_root
+    repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || repo_root="$PWD"
+    git config --global --add safe.directory "$repo_root"
+    echo "Trusted Git repo: $repo_root"
+}
 
 # atbash cipher
 atbash() {

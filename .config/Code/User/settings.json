@@ -3,7 +3,9 @@
   "editor.cursorSmoothCaretAnimation": "off",
   "editor.fontFamily": "Input Mono, monospace",
   "editor.guides.bracketPairs": "active",
-  "editor.lineNumbers": "interval",
+  // interval line numbers
+  // "editor.lineNumbers": "interval",
+  "editor.lineNumbers": "on",
   "editor.renderWhitespace": "boundary",
   "window.autoDetectColorScheme": false,
   "workbench.colorTheme": "Vitesse Dark",
@@ -23,14 +25,17 @@
 
   // ========== Editor ========== 
   "editor.mouseWheelZoom": true,
-  "editor.fontSize": 14,
-  "terminal.integrated.fontSize": 14,
+  // editor font size
+  "editor.fontSize": 15,
+  // terminal font size
+  "terminal.integrated.fontSize": 15,
   "debug.onTaskErrors": "debugAnyway",
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.wordSeparators": "`~!@#%^&*()=+[{]}\\|;:'\",.<>/?",
   "editor.find.addExtraSpaceOnTop": false,
   "editor.inlineSuggest.enabled": true,
-  "editor.multiCursorModifier": "ctrlCmd",
+  // "editor.multiCursorModifier": "ctrlCmd", // Ctrl+Click is reserved for multi-cursor behavior
+  "editor.multiCursorModifier": "alt",// Ctrl+Click follow/open-link gesture
   "editor.suggestSelection": "first",
   "editor.tabSize": 2,
   "editor.unicodeHighlight.invisibleCharacters": false,
@@ -54,6 +59,17 @@
   "terminal.integrated.cursorBlinking": true,
   "terminal.integrated.cursorStyle": "line",
   "terminal.integrated.fontWeight": "300",
+  "terminal.integrated.profiles.linux": {
+    "tmux": {
+      "path": "tmux",
+      // open with the same kitty's session
+      // "args": ["new-session", "-A", "-s", "default"]
+
+      // open in a new session
+      "args": ["new-session", "-A", "-s", "vscode"]
+    }
+  },
+  "terminal.integrated.defaultProfile.linux": "tmux",
   "terminal.integrated.persistentSessionReviveProcess": "never",
   "terminal.integrated.tabs.enabled": true,
   "workbench.editor.closeOnFileDelete": true,
