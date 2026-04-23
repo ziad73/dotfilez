@@ -1,0 +1,50 @@
+# Continue Configuration, all Kays from uuouu424
+# Location: ~/.continue/config.yaml
+
+# Free tier data may be used by Google to improve models, so avoid pasting highly sensitive proprietary secrets.
+
+name: Local Config
+version: 1.0.0
+schema: v1
+disableIndexing: true
+# comment if device got heavy, but it will disable all autocomplete suggestions while typing
+# disableTabAutocomplete: true
+
+models:
+  # General-purpose chat and code editing with high instruction-following.
+  - name: Llama3.3 70b Chat
+    provider: groq
+    model: "llama-3.3-70b-versatile" # This is the specific ID Groq expects
+    apiKey: "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"
+
+  # High-context model suitable for analyzing multiple files or large codeblocks.
+  - name: Gemini 3 Flash
+    provider: gemini
+    model: gemini-3-flash-preview
+    apiKey: "AIzaSyCOLXGibwiXyyfEdwuJyDYxDkWac9gUDfEY"
+
+
+  # - name: Mistral Codestral
+  #   provider: mistral
+  #   model: "codestral-latest"
+  #   apiKey: "YOUR_MISTRAL_KEY"
+  #   # Specialized model optimized for multi-language programming tasks.
+
+#   # --- Autocomplete Configuration ---
+
+#   - name: Groq 8B (Autocomplete)
+#     provider: groq
+#     model: "llama3-8b-8192"
+#     apiKey: "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"
+#     # Low-latency model for real-time inline code suggestions.
+
+# # Defines the default provider for ghost-text completions while typing.
+tabAutocompleteModel:
+  name: Groq 8B (Autocomplete)
+  provider: groq
+  model: llama3-8b-8192
+  apiKey: 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
+
+# tabAutocompleteOptions:
+#   # This pattern matches everything, effectively disabling it globally
+#   disableAutocompleteInFiles: ["*"]
