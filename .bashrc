@@ -543,3 +543,17 @@ install_pckgs() {
 
     echo "Installation process complete."
 }
+
+alias xampp='cd /opt/lampp/htdocs'
+alias g-sheet='xdg-open https://geminicli.com/docs/cli/cli-reference/'
+
+
+alias xstart='sudo /opt/lampp/lampp start'
+alias xstop='sudo /opt/lampp/lampp stop'
+
+export PATH="$PATH:$HOME/.dotnet/tools"
+
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)

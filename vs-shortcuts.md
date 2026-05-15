@@ -1,4 +1,5 @@
 The art of using Home, End, Page Up, Page Down, Shift, CTRL, Thats crazy shit man! 
+	- ctrl End/Home 	Got to Bottom/Top
 
 ctrl . fix suggestion
 ctrl B toggle left sidebar
@@ -34,3 +35,6 @@ search:
 	- ctrl p search file in current directory
 
 F12 or ctrl+click 	Go to Definition 
+
+
+ctrl L 	selects current line

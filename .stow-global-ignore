@@ -28,6 +28,15 @@ my-scripts
 make_scripts_executable.sh
 
 
+# Ignore markdown documentation
+screen recording setup.md
+# Ignore images/screenshots
+.*\.png
+.*\.jpg
+# Ignore the git folder
+\.git
+
+
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
 

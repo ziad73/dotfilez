@@ -1,0 +1,12 @@
+{
+  "BACKGROUND_COLOR": "#121214",
+  "offloadAdmControls": true,
+  "enableHardwareAcceleration": true,
+  "chromiumSwitches": {},
+  "IS_MAXIMIZED": true,
+  "IS_MINIMIZED": false,
+  "asyncVideoInputDeviceInit": false,
+  "SKIP_HOST_UPDATE": true,
+  "openH264Enabled": true,
+  "ENABLE_HW_ACCELERATION": false
+}

@@ -253,13 +253,12 @@ default_floating_border pixel 4
 assign [class="kitty"] 1
 # Assign Chrome
 assign [class="Google-chrome"] 2
-#assign [class="code-oss"] 3
 # assign [class="Evince"] 3
 assign [class="xournalpp"] 3 
 assign [class="discord"] 7
 # assign [class="vlc"] 4
 # assign [class="Mousepad"] 5
-assign [class="Ristretto"] 8
+assign [class="Ristretto"] 4
 assign [class="TelegramDesktop"] 6
 
 # Set default layout to tabbed in workspace 1 and 2
@@ -344,3 +343,9 @@ exec_always --no-startup-id xmodmap -e "keycode 135 = Down"
 # Type arrow symbols using Ctrl + l + a / Ctrl + r + a
 bindsym Control+l+a exec --no-startup-id xdotool type "←"
 bindsym Control+r+a exec --no-startup-id xdotool type "→"
+
+# Toggle visibility (hide/show the SSR window)
+bindsym $mod+Shift+v exec --no-startup-id simplescreenrecorder --toggle-visibility
+
+# Stop and Save the current recording
+bindsym $mod+Shift+s exec --no-startup-id simplescreenrecorder --stop-recording
