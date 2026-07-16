@@ -27,6 +27,7 @@
   "editor.mouseWheelZoom": true,
   // editor font size
   "editor.fontSize": 15,
+  "markdown.preview.fontSize": 20,
   // terminal font size
   "terminal.integrated.fontSize": 15,
   "debug.onTaskErrors": "debugAnyway",
@@ -310,6 +311,13 @@
   },
   "editor.minimap.enabled": false,
   "workbench.secondarySideBar.defaultVisibility": "visible",
+  // AI chats
   "chat.viewSessions.orientation": "stacked",
-  "chat.viewSessions.enabled": false
+  "chat.viewSessions.enabled": false,
+  "chat.fontSize": 15,
+  "chat.editor.fontSize": 14,
+  "supermaven.enable": {
+    "*": true,
+    "markdown": false
+  }
 }

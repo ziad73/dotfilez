@@ -1,0 +1,16 @@
+-- You can search for more
+
+-- Pretty selecting
+-- Auto-switch to vertical layout if the table is wider than the screen
+\x auto
+
+-- Use clean, modern Unicode lines instead of ugly ASCII dashes
+\pset linestyle unicode
+\pset border 2
+
+-- Make NULL values explicitly visible instead of blank empty spaces
+\pset null '∅ null'
+
+-- Customize the prompt to show [username@database]
+\set PROMPT1 '%n@%/%R%# '
+

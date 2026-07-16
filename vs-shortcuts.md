@@ -38,3 +38,6 @@ F12 or ctrl+click 	Go to Definition
 
 
 ctrl L 	selects current line
+
+
+! + tab create initial html page using code snippt

@@ -544,7 +544,6 @@ install_pckgs() {
     echo "Installation process complete."
 }
 
-alias xampp='cd /opt/lampp/htdocs'
 alias g-sheet='xdg-open https://geminicli.com/docs/cli/cli-reference/'
 
 

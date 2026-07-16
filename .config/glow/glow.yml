@@ -1,0 +1,24 @@
+# ~/.config/glow/glow.yml
+
+# Style name or absolute path to a JSON style sheet.
+# Options include: "dark", "light", "pink", or a custom json path
+style: "dark"
+# style: "/home/ziad/.config/glow/dracula.json"
+
+
+# Use the pager ("less") automatically for files longer than the terminal screen
+pager: true
+
+# Word-wrap width (0 means it will adapt dynamically to your terminal width)
+width: 80
+
+# Show local files in the interactive TUI mode
+local: true
+
+# Enable mouse wheel scrolling in the TUI/pager
+mouse: true
+
+# Handle long lines by wrapping instead of clipping
+wrap: true
+
+

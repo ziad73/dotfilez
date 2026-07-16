@@ -6,8 +6,8 @@
   <property name="pressureMultiplier" value="1"/>
   <property name="zoomGesturesEnabled" value="true"/>
   <property name="selectedToolbar" value="Minimal Left"/>
-  <property name="lastSavePath" value="/home/ziad/Documents/coding/tech/web/requirements-docs/srs"/>
-  <property name="lastOpenPath" value="/home/ziad/Documents/coding/tech/web/requirements-docs/srs"/>
+  <property name="lastSavePath" value="/home/ziad/Documents/coding/tech/web/back-end/dotnet/matrials/design-decisions/opt"/>
+  <property name="lastOpenPath" value="/mnt/hdd/college/3rd year/2nd semester/2- Information Retrieval (IR)/1- Lectures"/>
   <property name="lastImagePath" value="/home/ziad/Pictures"/>
   <property name="edgePanSpeed" value="20"/>
   <property name="edgePanMaxMult" value="5"/>
@@ -151,7 +151,7 @@
   <property name="latexSettings.externalEditorAutoConfirm" value="false"/>
   <property name="latexSettings.externalEditorCmd" value=""/>
   <property name="latexSettings.temporaryFileExt" value="tex"/>
-  <property name="font" font="Sans" size="12"/>
+  <property name="font" font="Sans" size="8"/>
   <data name="buttonConfig">
     <data name="default">
       <attribute name="color" type="hex" value="ff000000"/>
@@ -206,7 +206,7 @@
     <data name="drawSpline"/>
     <data name="eraser">
       <attribute name="size" type="string" value="MEDIUM"/>
-      <attribute name="type" type="string" value="deleteStroke"/>
+      <attribute name="type" type="string" value="whiteout"/>
     </data>
     <data name="hand"/>
     <data name="highlighter">
@@ -226,11 +226,11 @@
       <attribute name="size" type="string" value="MEDIUM"/>
     </data>
     <data name="pen">
-      <attribute name="color" type="hex" value="ff3584e4"/>
+      <attribute name="color" type="hex" value="ff000cff"/>
       <attribute name="drawingType" type="string" value="default"/>
       <attribute name="fill" type="int" value="0"/>
       <attribute name="fillAlpha" type="int" value="128"/>
-      <attribute name="size" type="string" value="THIN"/>
+      <attribute name="size" type="string" value="BIG"/>
       <attribute name="style" type="string" value="plain"/>
     </data>
     <data name="playObject"/>
@@ -238,7 +238,7 @@
     <data name="selectMultiLayerRegion"/>
     <data name="selectObject"/>
     <data name="selectPdfTextLinear">
-      <attribute name="color" type="hex" value="ffffff00"/>
+      <attribute name="color" type="hex" value="ff000cff"/>
     </data>
     <data name="selectPdfTextRect">
       <attribute name="color" type="hex" value="ffffff00"/>
@@ -247,7 +247,7 @@
     <data name="selectRegion"/>
     <data name="showFloatingToolbox"/>
     <data name="text">
-      <attribute name="color" type="hex" value="ff3584e4"/>
+      <attribute name="color" type="hex" value="ff000cff"/>
     </data>
     <data name="verticalSpace"/>
   </data>
