@@ -6,7 +6,7 @@
   <property name="pressureMultiplier" value="1"/>
   <property name="zoomGesturesEnabled" value="true"/>
   <property name="selectedToolbar" value="Minimal Left"/>
-  <property name="lastSavePath" value="/home/ziad/Documents/coding/tech/web/back-end/dotnet/matrials/design-decisions/opt"/>
+  <property name="lastSavePath" value="/home/ziad/Documents/books/tajweed"/>
   <property name="lastOpenPath" value="/mnt/hdd/college/3rd year/2nd semester/2- Information Retrieval (IR)/1- Lectures"/>
   <property name="lastImagePath" value="/home/ziad/Pictures"/>
   <property name="edgePanSpeed" value="20"/>
@@ -19,11 +19,11 @@
   <property name="maximized" value="true"/>
   <property name="showToolbar" value="true"/>
   <property name="showSidebar" value="false"/>
-  <property name="sidebarWidth" value="50"/>
+  <property name="sidebarWidth" value="186"/>
   <property name="sidebarNumberingStyle" value="1"/>
   <property name="sidebarOnRight" value="false"/>
   <property name="scrollbarOnLeft" value="false"/>
-  <property name="menubarVisible" value="true"/>
+  <property name="menubarVisible" value="false"/>
   <property name="filepathShownInTitlebar" value="false"/>
   <property name="pageNumberShownInTitlebar" value="false"/>
   <property name="numColumns" value="1"/>
@@ -226,7 +226,7 @@
       <attribute name="size" type="string" value="MEDIUM"/>
     </data>
     <data name="pen">
-      <attribute name="color" type="hex" value="ff000cff"/>
+      <attribute name="color" type="hex" value="ffe01b24"/>
       <attribute name="drawingType" type="string" value="default"/>
       <attribute name="fill" type="int" value="0"/>
       <attribute name="fillAlpha" type="int" value="128"/>

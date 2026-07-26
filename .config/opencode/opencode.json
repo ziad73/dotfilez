@@ -11,6 +11,11 @@
       "options": {
         "apiKey": "sk-434821a41ea84c59bb21ca4940ac03a2"
       }
-    }
+    },
+  "openrouter": {
+      "options": {
+        "apiKey": "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",
+        "baseURL": "https://openrouter.ai"
+      }
   }
 }

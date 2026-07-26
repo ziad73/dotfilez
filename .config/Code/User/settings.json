@@ -319,5 +319,6 @@
   "supermaven.enable": {
     "*": true,
     "markdown": false
-  }
+  },
+  "supermaven.allowGitignore": true
 }

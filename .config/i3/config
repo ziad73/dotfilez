@@ -350,3 +350,6 @@ bindsym $mod+Shift+v exec --no-startup-id simplescreenrecorder --toggle-visibili
 
 # Stop and Save the current recording
 bindsym $mod+Shift+s exec --no-startup-id simplescreenrecorder --stop-recording
+
+# Add this line near your floating window rules in ~/.config/i3/config
+for_window [class="ScreenArc"] floating enable resize set 1000 700 center

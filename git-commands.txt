@@ -300,3 +300,27 @@ d5334-8d3ae
 c8d49-92dcb
 d0895-15e3e
 689a1-d7ca9
+
+
+
+
+
+
+
+
+
+Tricks:
+- How to update n last commits message in git?
+    - Use interactive rebase. Here's the process: git rebase -i HEAD~4
+        - This opens an editor with the 4 commits listed. Change pick to reword (or just r) for each one:
+            - pick abc123 first commit message
+            - pick def456 second commit message
+            - pick ghi789 third commit message
+            - pick jkl012 fourth commit message
+            - →
+            - reword abc123 first commit message
+            - reword def456 second commit message
+            - reword ghi789 third commit message
+            - reword jkl012 fourth commit message
+        - Save & close. An editor will open for each commit in sequence — type the new message, save, close, repeat. After all 4, the rebase completes.
+    - then force push if it was remote: git push --force-with-lease
