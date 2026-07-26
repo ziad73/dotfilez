@@ -1,9 +1,10 @@
 #!/bin/bash
-# Generated on: Sun Apr 26 11:52:03 PM EEST 2026
+# Generated on: Sun Jul 26 06:24:27 PM EEST 2026
 
 export PACMAN_PKGS=(
   "7zip"
   "alsa-utils"
+  "android-tools"
   "aspnet-runtime"
   "aspnet-targeting-pack"
   "base"
@@ -19,6 +20,7 @@ export PACMAN_PKGS=(
   "cmake"
   "copyq"
   "cppcheck"
+  "dbeaver"
   "discord"
   "dmenu"
   "dotnet-sdk"
@@ -40,8 +42,10 @@ export PACMAN_PKGS=(
   "glow"
   "go"
   "gparted"
+  "gpu-screen-recorder"
   "grub"
   "gst-plugin-pipewire"
+  "gvfs-mtp"
   "htop"
   "i3-wm"
   "i3blocks"
@@ -57,6 +61,7 @@ export PACMAN_PKGS=(
   "lib32-mesa"
   "libgccjit"
   "libpulse"
+  "libva-utils"
   "lightdm"
   "lightdm-gtk-greeter"
   "linux"
@@ -73,11 +78,13 @@ export PACMAN_PKGS=(
   "networkmanager"
   "ninja"
   "nodejs"
+  "noise-suppression-for-voice"
   "noto-fonts"
   "noto-fonts-cjk"
   "noto-fonts-emoji"
   "npm"
   "ntfs-3g"
+  "nvm"
   "os-prober"
   "pavucontrol"
   "pipewire"
@@ -89,6 +96,7 @@ export PACMAN_PKGS=(
   "postgresql"
   "pulseaudio-alsa"
   "python-pip"
+  "python-virtualenv"
   "rclone"
   "redshift"
   "ripgrep"
@@ -154,9 +162,57 @@ export AUR_PKGS=(
   "i3-autolayout"
   "mssql-tools"
   "neofetch"
+  "opencode-bin"
   "postman-bin"
+  "simplescreenrecorder"
   "visual-studio-code-bin"
-  "xampp"
   "yay"
   "yay-debug"
 )
+
+export VSCODE_EXTENSIONS=(
+  "antfu.browse-lite"
+  "antfu.iconify"
+  "antfu.icons-carbon"
+  "antfu.theme-vitesse"
+  "antfu.where-am-i"
+  "catppuccin.catppuccin-vsc-icons"
+  "formulahendry.code-runner"
+  "github.copilot"
+  "github.copilot-chat"
+  "jmrog.vscode-nuget-package-manager"
+  "mermaidchart.vscode-mermaid-chart"
+  "ms-dotnettools.csdevkit"
+  "ms-dotnettools.csharp"
+  "ms-dotnettools.vscode-dotnet-runtime"
+  "ms-vscode.cmake-tools"
+  "ms-vscode.cpp-devtools"
+  "ms-vscode.cpptools"
+  "openai.chatgpt"
+  "qwtel.sqlite-viewer"
+  "supermaven.supermaven"
+  "yzane.markdown-pdf"
+)
+
+export NPM_PKGS=(
+  "@angular/cli"
+  "@anthropic-ai/claude-code"
+  "@openai/codex"
+  "corepack"
+  "npm"
+  ""
+)
+
+export PIP_PKGS=(
+)
+
+export CARGO_PKGS=(
+)
+
+export GO_PKGS=(
+)
+
+export DOTNET_TOOLS=(
+  "dotnet-ef"
+)
+

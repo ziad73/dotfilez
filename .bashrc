@@ -483,10 +483,48 @@ update_pckgs() {
         echo "export AUR_PKGS=("
         pacman -Qqem | sed 's/^/  "/' | sed 's/$/"/'
         echo ")"
+        echo ""
 
-        # 3. Flatpaks (Optional check)
-        if command -v flatpak &> /dev/null; then
+        # 3. NPM Global Packages
+        echo "export NPM_PKGS=("
+        npm ls -g --depth=0 2>/dev/null | tail -n +2 | sed 's/.* //' | sed 's/@[0-9].*//' | sed 's/^/  "/' | sed 's/$/"/'
+        echo ")"
+        echo ""
+
+        # 4. Pip User Packages
+        echo "export PIP_PKGS=("
+        pip3 list --user --format=freeze 2>/dev/null | sed 's/=.*//' | sed 's/^/  "/' | sed 's/$/"/'
+        echo ")"
+        echo ""
+
+        # 5. Cargo Installed Tools
+        echo "export CARGO_PKGS=("
+        cargo install --list 2>/dev/null | awk '{print $1}' | sort -u | sed 's/^/  "/' | sed 's/$/"/'
+        echo ")"
+        echo ""
+
+        # 6. Go Installed Binaries
+        echo "export GO_PKGS=("
+        ls "$GOPATH/bin" 2>/dev/null | sed 's/^/  "/' | sed 's/$/"/'
+        echo ")"
+        echo ""
+
+        # 7. Dotnet Global Tools
+        echo "export DOTNET_TOOLS=("
+        dotnet tool list -g 2>/dev/null | tail -n +3 | awk '{print $1}' | sed 's/^/  "/' | sed 's/$/"/'
+        echo ")"
+        echo ""
+
+        # 8. VS Code Extensions
+        if command -v code &> /dev/null; then
+            echo "export VSCODE_EXTENSIONS=("
+            code --list-extensions 2>/dev/null | sed 's/^/  "/' | sed 's/$/"/'
+            echo ")"
             echo ""
+        fi
+
+        # 9. Flatpaks
+        if command -v flatpak &> /dev/null; then
             echo "export FLATPAK_PKGS=("
             flatpak list --app --columns=application | sed 's/^/  "/' | sed 's/$/"/'
             echo ")"
@@ -507,7 +545,7 @@ install_pckgs() {
         return 1
     fi
 
-    # Source the variables (PACMAN_PKGS, AUR_PKGS, FLATPAK_PKGS)
+    # Source the variables
     source "$DOTFILES_PATH"
 
     # 1. Install Native Pacman Packages
@@ -518,7 +556,6 @@ install_pckgs() {
 
     # 2. Install AUR Packages
     if [ ${#AUR_PKGS[@]} -gt 0 ]; then
-        # Check for common AUR helpers (yay or paru)
         local AUR_HELPER=""
         if command -v yay &> /dev/null; then
             AUR_HELPER="yay"
@@ -534,10 +571,51 @@ install_pckgs() {
         fi
     fi
 
-    # 3. Install Flatpaks
+    # 3. Install NPM Global Packages
+    if [ ${#NPM_PKGS[@]} -gt 0 ] && command -v npm &> /dev/null; then
+        echo "--> Installing NPM global packages..."
+        npm install -g "${NPM_PKGS[@]}"
+    fi
+
+    # 4. Install Pip User Packages
+    if [ ${#PIP_PKGS[@]} -gt 0 ] && command -v pip3 &> /dev/null; then
+        echo "--> Installing pip user packages..."
+        pip3 install --user "${PIP_PKGS[@]}"
+    fi
+
+    # 5. Install Cargo Tools
+    if [ ${#CARGO_PKGS[@]} -gt 0 ] && command -v cargo &> /dev/null; then
+        echo "--> Installing cargo tools..."
+        cargo install "${CARGO_PKGS[@]}"
+    fi
+
+    # 6. Install Go Tools
+    if [ ${#GO_PKGS[@]} -gt 0 ] && command -v go &> /dev/null; then
+        echo "--> Installing Go tools..."
+        for pkg in "${GO_PKGS[@]}"; do
+            go install "$pkg"
+        done
+    fi
+
+    # 7. Install Dotnet Global Tools
+    if [ ${#DOTNET_TOOLS[@]} -gt 0 ] && command -v dotnet &> /dev/null; then
+        echo "--> Installing dotnet global tools..."
+        for tool in "${DOTNET_TOOLS[@]}"; do
+            dotnet tool install -g "$tool"
+        done
+    fi
+
+    # 8. Install VS Code Extensions
+    if [ ${#VSCODE_EXTENSIONS[@]} -gt 0 ] && command -v code &> /dev/null; then
+        echo "--> Installing VS Code extensions..."
+        for ext in "${VSCODE_EXTENSIONS[@]}"; do
+            code --install-extension "$ext" --force
+        done
+    fi
+
+    # 9. Install Flatpaks
     if [ ${#FLATPAK_PKGS[@]} -gt 0 ] && command -v flatpak &> /dev/null; then
         echo "--> Installing Flatpaks..."
-        # Flatpak install logic (assumes flathub is configured)
         flatpak install --or-update -y flathub "${FLATPAK_PKGS[@]}"
     fi
 
