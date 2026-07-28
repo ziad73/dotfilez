@@ -18,7 +18,10 @@ if ! shopt -oq posix; then
 fi
 
 
-alias ls='ls -F'
+alias ls='ls -F --color=auto'
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
 
 # Open searched file(s) with nvim
 # alias vfzf='nvim $(fzf -m --preview="bat --color=always {}")' # click tab to select multiple files at once
@@ -261,6 +264,8 @@ path_append "/opt/nvim"
 path_append "/usr/local/bin"
 export PATH
 
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
 # alias name for path directory
 alias lcl="cd /mnt/localdisk/"
 
@@ -331,30 +336,75 @@ run() {
 }
 
 open() {
-    file="$1"
-    ext="${file##*.}"
-    ext="${ext,,}" # lowercase
+    local file="$1"
+    local ext="${file##*.}"
+    ext="${ext,,}"
 
-    if [ ! -f "$1" ]; then
+    # handle URLs
+    if [[ "$file" =~ ^https?:// ]]; then
+        google-chrome "$file" &>/dev/null &
+        return
+    fi
+
+    # handle directories
+    if [ -d "$file" ]; then
+        dolphin "$file" &>/dev/null &
+        return
+    fi
+
+    if [ ! -f "$file" ]; then
         echo "File not found!"
         return 1
     fi
+
+    # handle compound tar extensions
+    local name="${file,,}"
+    case "$name" in
+        *.tar.gz | *.tar.xz | *.tar.bz2 | *.tar.zst | *.tar.lz | *.tgz | *.tbz2 | *.txz)
+            command -v ark &>/dev/null && ark "$file" &>/dev/null &
+            return
+            ;;
+    esac
+
     case "$ext" in
     pdf | xopp)
-        # evince "$file" &>/dev/null &
-        xournalpp "$file" &>/dev/null &
+        command -v xournalpp &>/dev/null && xournalpp "$file" &>/dev/null &
         ;;
-    txt | md | log | cfg)
-        mousepad "$file" &>/dev/null &
+    txt | md | log | cfg | ini | conf | env)
+        command -v code &>/dev/null && code "$file" &>/dev/null &
+        ;;
+    py | js | ts | jsx | tsx | go | c | cpp | cxx | h | hpp | rs | zig)
+        command -v code &>/dev/null && code "$file" &>/dev/null &
+        ;;
+    sh | bash | zsh | fish)
+        command -v code &>/dev/null && code "$file" &>/dev/null &
+        ;;
+    yaml | yml | toml | json | xml | css | scss | less | sass)
+        command -v code &>/dev/null && code "$file" &>/dev/null &
+        ;;
+    vim | vimrc | lua | sql | gradle | makefile | dockerfile | tf | envrc)
+        command -v code &>/dev/null && code "$file" &>/dev/null &
         ;;
     mp4 | mkv | avi | mov | flv | wmv | webm)
-        vlc "$file" &>/dev/null &
+        command -v haruna &>/dev/null && haruna "$file" &>/dev/null &
         ;;
-    mp3 | wav | ogg | flac)
-        vlc "$file" &>/dev/null &
+    mp3 | wav | ogg | flac | aac | m4a | wma)
+        command -v haruna &>/dev/null && haruna "$file" &>/dev/null &
         ;;
-    jpg | jpeg | png | gif | bmp)
-        ristretto "$file" &>/dev/null &
+    jpg | jpeg | png | gif | bmp | svg | webp | ico)
+        command -v gwenview &>/dev/null && gwenview "$file" &>/dev/null &
+        ;;
+    html | htm)
+        command -v google-chrome &>/dev/null && google-chrome "$file" &>/dev/null &
+        ;;
+    zip | tar | xz | rar | 7z | gz | bz2 | zst)
+        command -v ark &>/dev/null && ark "$file" &>/dev/null &
+        ;;
+    docx | xlsx | pptx | odt | ods | odp | csv | doc | xls | ppt)
+        command -v libreoffice &>/dev/null && libreoffice "$file" &>/dev/null &
+        ;;
+    iso)
+        command -v ark &>/dev/null && ark "$file" &>/dev/null &
         ;;
     *)
         xdg-open "$file" &>/dev/null &
@@ -364,9 +414,9 @@ open() {
 
 alias v="vim"
 
-# Auto start tmux
+# Auto start tmux in every terminal (including VS Code)
 if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
-    tmux attach -t default || tmux new -s default
+    tmux attach -t default 2>/dev/null || tmux new -s default
 fi
 
 export NVM_DIR="$HOME/.nvm"
@@ -462,165 +512,7 @@ clip() {
 
     echo "Copied '$1' to clipboard as $mime"
 }
-update_pckgs() {
-    local DOTFILES_PATH="$HOME/dotfiles/pckgs.sh"
 
-    # Create the directory if it doesn't exist
-    mkdir -p "$(dirname "$DOTFILES_PATH")"
-
-    {
-        echo "#!/bin/bash"
-        echo "# Generated on: $(date)"
-        echo ""
-
-        # 1. Native Pacman Packages (Explicitly installed)
-        echo "export PACMAN_PKGS=("
-        pacman -Qqen | sed 's/^/  "/' | sed 's/$/"/'
-        echo ")"
-        echo ""
-
-        # 2. AUR Packages (via pacman -Qm or yay)
-        echo "export AUR_PKGS=("
-        pacman -Qqem | sed 's/^/  "/' | sed 's/$/"/'
-        echo ")"
-        echo ""
-
-        # 3. NPM Global Packages
-        echo "export NPM_PKGS=("
-        npm ls -g --depth=0 2>/dev/null | tail -n +2 | sed 's/.* //' | sed 's/@[0-9].*//' | sed 's/^/  "/' | sed 's/$/"/'
-        echo ")"
-        echo ""
-
-        # 4. Pip User Packages
-        echo "export PIP_PKGS=("
-        pip3 list --user --format=freeze 2>/dev/null | sed 's/=.*//' | sed 's/^/  "/' | sed 's/$/"/'
-        echo ")"
-        echo ""
-
-        # 5. Cargo Installed Tools
-        echo "export CARGO_PKGS=("
-        cargo install --list 2>/dev/null | awk '{print $1}' | sort -u | sed 's/^/  "/' | sed 's/$/"/'
-        echo ")"
-        echo ""
-
-        # 6. Go Installed Binaries
-        echo "export GO_PKGS=("
-        ls "$GOPATH/bin" 2>/dev/null | sed 's/^/  "/' | sed 's/$/"/'
-        echo ")"
-        echo ""
-
-        # 7. Dotnet Global Tools
-        echo "export DOTNET_TOOLS=("
-        dotnet tool list -g 2>/dev/null | tail -n +3 | awk '{print $1}' | sed 's/^/  "/' | sed 's/$/"/'
-        echo ")"
-        echo ""
-
-        # 8. VS Code Extensions
-        if command -v code &> /dev/null; then
-            echo "export VSCODE_EXTENSIONS=("
-            code --list-extensions 2>/dev/null | sed 's/^/  "/' | sed 's/$/"/'
-            echo ")"
-            echo ""
-        fi
-
-        # 9. Flatpaks
-        if command -v flatpak &> /dev/null; then
-            echo "export FLATPAK_PKGS=("
-            flatpak list --app --columns=application | sed 's/^/  "/' | sed 's/$/"/'
-            echo ")"
-        fi
-    } > "$DOTFILES_PATH"
-
-    chmod +x "$DOTFILES_PATH"
-    echo "Successfully updated $DOTFILES_PATH"
-}
-
-
-install_pckgs() {
-    local DOTFILES_PATH="$HOME/dotfiles/pckgs.sh"
-
-    # Check if the package list exists
-    if [ ! -f "$DOTFILES_PATH" ]; then
-        echo "Error: $DOTFILES_PATH not found. Run your update function first."
-        return 1
-    fi
-
-    # Source the variables
-    source "$DOTFILES_PATH"
-
-    # 1. Install Native Pacman Packages
-    if [ ${#PACMAN_PKGS[@]} -gt 0 ]; then
-        echo "--> Installing native packages..."
-        sudo pacman -S --needed --noconfirm "${PACMAN_PKGS[@]}"
-    fi
-
-    # 2. Install AUR Packages
-    if [ ${#AUR_PKGS[@]} -gt 0 ]; then
-        local AUR_HELPER=""
-        if command -v yay &> /dev/null; then
-            AUR_HELPER="yay"
-        elif command -v paru &> /dev/null; then
-            AUR_HELPER="paru"
-        fi
-
-        if [ -n "$AUR_HELPER" ]; then
-            echo "--> Installing AUR packages using $AUR_HELPER..."
-            $AUR_HELPER -S --needed --noconfirm "${AUR_PKGS[@]}"
-        else
-            echo "Warning: No AUR helper (yay/paru) found. Skipping AUR packages."
-        fi
-    fi
-
-    # 3. Install NPM Global Packages
-    if [ ${#NPM_PKGS[@]} -gt 0 ] && command -v npm &> /dev/null; then
-        echo "--> Installing NPM global packages..."
-        npm install -g "${NPM_PKGS[@]}"
-    fi
-
-    # 4. Install Pip User Packages
-    if [ ${#PIP_PKGS[@]} -gt 0 ] && command -v pip3 &> /dev/null; then
-        echo "--> Installing pip user packages..."
-        pip3 install --user "${PIP_PKGS[@]}"
-    fi
-
-    # 5. Install Cargo Tools
-    if [ ${#CARGO_PKGS[@]} -gt 0 ] && command -v cargo &> /dev/null; then
-        echo "--> Installing cargo tools..."
-        cargo install "${CARGO_PKGS[@]}"
-    fi
-
-    # 6. Install Go Tools
-    if [ ${#GO_PKGS[@]} -gt 0 ] && command -v go &> /dev/null; then
-        echo "--> Installing Go tools..."
-        for pkg in "${GO_PKGS[@]}"; do
-            go install "$pkg"
-        done
-    fi
-
-    # 7. Install Dotnet Global Tools
-    if [ ${#DOTNET_TOOLS[@]} -gt 0 ] && command -v dotnet &> /dev/null; then
-        echo "--> Installing dotnet global tools..."
-        for tool in "${DOTNET_TOOLS[@]}"; do
-            dotnet tool install -g "$tool"
-        done
-    fi
-
-    # 8. Install VS Code Extensions
-    if [ ${#VSCODE_EXTENSIONS[@]} -gt 0 ] && command -v code &> /dev/null; then
-        echo "--> Installing VS Code extensions..."
-        for ext in "${VSCODE_EXTENSIONS[@]}"; do
-            code --install-extension "$ext" --force
-        done
-    fi
-
-    # 9. Install Flatpaks
-    if [ ${#FLATPAK_PKGS[@]} -gt 0 ] && command -v flatpak &> /dev/null; then
-        echo "--> Installing Flatpaks..."
-        flatpak install --or-update -y flathub "${FLATPAK_PKGS[@]}"
-    fi
-
-    echo "Installation process complete."
-}
 
 alias g-sheet='xdg-open https://geminicli.com/docs/cli/cli-reference/'
 
@@ -630,7 +522,3 @@ alias xstop='sudo /opt/lampp/lampp stop'
 
 export PATH="$PATH:$HOME/.dotnet/tools"
 
-
-
-# Load Angular CLI autocompletion.
-source <(ng completion script)

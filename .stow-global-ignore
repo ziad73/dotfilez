@@ -27,6 +27,18 @@ my-scripts
 ^.config/Code/User/workspaceStorage($|/)
 make_scripts_executable.sh
 
+# Configs we don't want stowed
+^\.config/pipewire/
+
+# Broken / empty / not needed
+^aichat$
+^battery-notify$
+^\.gemini/
+
+# Doc files
+^git-commands\.txt$
+^vs-shortcuts\.md$
+^i3-keys\.md$
 
 # Ignore markdown documentation
 screen recording setup.md

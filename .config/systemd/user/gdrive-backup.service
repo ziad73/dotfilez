@@ -1,6 +1,0 @@
-[Unit]
-Description=Monthly Google Drive Backup
-
-[Service]
-Type=oneshot
-ExecStart=/home/ziad/Documents/backup/gdrive_backup.sh

@@ -62,7 +62,7 @@
   "terminal.integrated.fontWeight": "300",
   "terminal.integrated.profiles.linux": {
     "tmux": {
-      "path": "tmux",
+      "path": "/home/linuxbrew/.linuxbrew/bin/tmux",
       // open with the same kitty's session
       // "args": ["new-session", "-A", "-s", "default"]
 
@@ -109,7 +109,7 @@
   "window.nativeTabs": true, // this is great, macOS only
   "window.title": "${rootName}", // this make tabs more readable
   "window.titleBarStyle": "custom",
-  "extensions.autoUpdate": false,// "onlyEnabledExtensions",
+  "extensions.autoUpdate": "off",// "onlyEnabledExtensions",
 
   // ========== Extension configs ========== 
   "emmet.showSuggestionsAsSnippets": true,
